@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.template.mapper.TestMapper">
+
+    <resultMap id="BaseResultMap" type="com.template.entity.TestEntity">
+            <result property="test" column="test" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        test
+    </sql>
+    <select id="selectTest" resultMap="BaseResultMap">
+        select test
+        from test
+    </select>
+    <select id="selectTestPage" resultMap="BaseResultMap">
+        select test
+        from test
+    </select>
+</mapper>

@@ -1,0 +1,118 @@
+debug: false
+spring:
+  redis:
+    database: 0
+    # Redis服务器地址
+    host: 127.0.0.1
+    # Redis服务器连接端口
+    port: 6379
+    # Redis服务器连接密码（默认为空）
+    password: passwd
+  servlet:
+    #上传文件限制
+    multipart:
+      max-file-size: 64000MB
+      max-request-size: 6400MB
+  datasource:
+    username: root
+    password: Mysql666..
+    url: jdbc:mysql://127.0.0.1:3306/ppgjx?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  resources:
+    static-locations: file:./data
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+server:
+  port: 8080
+  servlet:
+    context-path: /
+##swagger 配置
+knife4j:
+  enable: true
+  setting:
+    language: zh-CN
+
+jwt-key: 70110690416677364891748685873956833317800852581856414143542041794969700530173402852983698178472281380130043935770416793459607967206241082241113561734638462276181933346605844636144621137130057963295545992283159139833529017268180629879515307494037051598997910623077461214209508301521002244609066486678241439635376332937763022811683756246138105199847747859787168443360830313017336499509379432332170081077005493014006641934995807201888188592779284455071884516332454123821527159261440945410859541862407222751208767231
+
+##nginx前缀
+nginxPrefix: /app
+
+#testwescoketport端口
+testWebsocketPort: 8888
+
+
+#服务器带宽用于限流 Byte 5M带宽就是5000000每秒
+serverRate: 5000000
+
+
+
+logging:
+  level:
+    root: info
+    com.template.mapper: info
+  file:
+    path: spring.log
+
+aliSms:
+  accessKeyId:
+  accessKeySecret:
+
+geTui:
+  appKey:
+  appId:
+  masterSecret:
+  url:
+
+aliOss:
+  accessKeyId:
+  accessKeySecret:
+  bucketName:
+  endpoint:
+  #访问域名
+  domain:
+  #地图缓存存储目录
+  mapJsonDir: map_json/
+
+#百度智能云
+baidu:
+  ocrAppId:
+  ocrApiKey:
+  ocrSecretKey:
+  ocrTranslateAppId:
+  ocrTranslateApiKey:
+  ocrTranslateSecretKey:
+# www.alapi.cn
+alAplToken:
+
+#友盟推送
+ymPush:
+  ios:
+    AppKey:
+    AppMasterSecret:
+  android:
+    AppKey:
+    AppMasterSecret:
+
+#微软语音
+weiruan:
+  textToVoice:
+    #订阅秘钥
+    speechSubscriptionKey:
+    #地区
+    serviceRegion:
+
+app:
+  version:
+    android:
+    ios:
+  url:
+  temp:
+    #临时文件存放路径
+    path:
+      img: ./data/temp/img/
+      audio: ./data/temp/audio/
+      other: ./data/temp/other/
+
+  #app/get_oss_v1接口秘钥
+  aesPassword:
