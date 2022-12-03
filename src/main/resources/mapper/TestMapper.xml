@@ -1,22 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.template.mapper.TestMapper">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.template.dao.TestDao">
 
-    <resultMap id="BaseResultMap" type="com.template.entity.TestEntity">
-            <result property="test" column="test" jdbcType="VARCHAR"/>
+    <resultMap type="com.template.entity.TestEntity" id="BaseResultMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
     </resultMap>
 
+
     <sql id="Base_Column_List">
-        test
-    </sql>
-    <select id="selectTest" resultMap="BaseResultMap">
-        select test
+id,name    </sql>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into template.test(name)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.name})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into template.test(name)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.name})
+        </foreach>
+        on duplicate key update
+         name = values(name) )
+    </insert>
+     <!-- 模糊查询 -->
+    <select id="search" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
         from test
+        <if test="map != null">
+            <where>
+                <if test="map.name != null and map.name != ''">
+                    or name = #{map.name}
+                </if>
+            </where>
+        </if>
     </select>
-    <select id="selectTestPage" resultMap="BaseResultMap">
-        select test
-        from test
-    </select>
+
 </mapper>
+

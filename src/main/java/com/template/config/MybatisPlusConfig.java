@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan("com.template.mapper")
+@MapperScan("com.template.dao")
 public class MybatisPlusConfig {
 
     // 旧版

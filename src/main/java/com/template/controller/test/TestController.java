@@ -1,44 +1,102 @@
 package com.template.controller.test;
 
+
+
+
+
+
+
+
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.api.ApiController;
+import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.template.common.result.PageReq;
-import com.template.common.result.PageResult;
-import com.template.common.result.Result;
 import com.template.constant.ResultCode;
 import com.template.entity.TestEntity;
 import com.template.execption.ResRunException;
-import com.template.mapper.TestMapper;
 import com.template.service.TestService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
+import com.template.common.result.PageResult;
+import com.template.common.result.PageReq;
+import io.swagger.annotations.Api;
+import com.template.common.result.Result;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
-
+import io.swagger.annotations.ApiOperation;
 /**
- * app全局设置
+ * 测试表(Test)表控制层
  *
- * @Author: xjm
- * @Date: 2021/09/14/19:43
- * @Description:
+ * @author makejava
+ * @since 2022-12-04 01:16:21
  */
-@Controller
-@ResponseBody
-@RequestMapping(value = "/test")
-@Api(tags = "测试")
-@Slf4j
+@RestController
+@Api(tags = "test")
+@RequestMapping("/test")
 public class TestController {
+    /**
+     * 服务对象
+     */
+    @Resource
+    private TestService TestService;
+
+
+     /**
+     *
+     *
+     * @param
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/search",method = RequestMethod.GET)
+    @ApiOperation(value = "分页带条件查询所有数据")
+    public PageResult<Page<TestEntity>> search(PageReq req, TestEntity testEntity) {
+        return PageResult.success(this.TestService.search(req, testEntity));
+    }
+
+
+
+
+    @RequestMapping(value = "/queryId",method = RequestMethod.GET)
+    @ApiOperation(value = "通过主键查id")
+    public Result<TestEntity> selectOne(@RequestParam("id") Serializable id) {
+
+        TestEntity testEntity = TestService.getBaseMapper().selectById(id);
+        return Result.success(testEntity);
+    }
+
+
+
+    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @ApiOperation(value = "新增数据")
+    public Result add(@RequestBody  TestEntity testEntity) {
+
+        TestService.save(testEntity);
+        return Result.success();
+    }
+
+
+    @RequestMapping(value = "/updateId",method = RequestMethod.POST)
+    @ApiOperation(value = "通过主键修改数据")
+    public Result updateId(@RequestBody TestEntity testEntity) {
+        this. TestService.updateById(testEntity);
+        return Result.success();
+    }
+
+
+    @RequestMapping(value = "/deleteId",method = RequestMethod.POST)
+    @ApiOperation(value = "删除指定id数据")
+    public Result deleteId(@RequestParam("id") Serializable id) {
+        this. TestService.removeById(id);
+        return Result.success();
+    }
+
 
     @Resource
     private TestService testService;
@@ -51,16 +109,15 @@ public class TestController {
         return "test";
     }
 
-    @Resource
-    private TestMapper testMapper;
 
     @ApiOperation(value = "测试登录")
     @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public String login(HttpServletResponse response,HttpServletRequest request) throws IOException {
+    public String login(HttpServletResponse response, HttpServletRequest request) throws IOException {
         StpUtil.login("123");
         StpUtil.getSession().set("user","qweqeqwe");
         return (String) StpUtil.getSession().get("user");
     }
+
 
     @ApiOperation(value = "测试登录是否有效")
     @RequestMapping(value = "/isLogin",method = RequestMethod.GET)
@@ -71,25 +128,6 @@ public class TestController {
         return "登录成功";
     }
 
-
-    @ApiOperation(value = "测试数据库")
-    @RequestMapping(value = "/test_mysql",method = RequestMethod.GET)
-    public Result<List<TestEntity>> test_mysql(HttpServletResponse response) throws IOException {
-
-        List<TestEntity> testEntities = testMapper.selectTest();
-
-        return Result.success(testEntities);
-    }
-
-
-    @ApiOperation(value = "测试数据库分页")
-    @RequestMapping(value = "/test_mysql_page",method = RequestMethod.GET)
-    public PageResult<Page<TestEntity>> test_mysql_page(HttpServletResponse response, PageReq req) throws IOException {
-
-        Page<TestEntity> testEntities = testMapper.selectTestPage(new Page<>(req.getPage(), req.getPageSize()));
-
-        return PageResult.success(testEntities);
-    }
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
@@ -107,9 +145,7 @@ public class TestController {
     @RequestMapping(value = "/exc",method = RequestMethod.GET)
     public Result exc(HttpServletResponse response) throws IOException {
 
-        //throw new ResRunException(ResultCode.PHONE_CODE_EXPIRE_ERR);
-        throw new ResRunException(1,"123");
+        throw new ResRunException(ResultCode.PHONE_CODE_EXPIRE_ERR);
     }
 
 }
-

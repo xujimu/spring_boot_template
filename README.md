@@ -6,7 +6,5 @@
 # 使用TestController测试是否正常
 
 
-mybatis自动生成配置
 
-![img.png](img.png)
-![img_2.png](img_1.png)
+EasyCodeConfig.json 文件导入 easy插件
