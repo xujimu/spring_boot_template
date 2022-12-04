@@ -7,4 +7,4 @@
 
 
 
-EasyCodeConfig.json 文件导入 easy插件
+EasyCodeConfig.json 文件导入 easy插件 idea EasyCode插件里面设置表前缀
